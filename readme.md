@@ -171,3 +171,8 @@ about the effect of any particular kind of change on clients the best
 way to answer it is to actually try it out.  These examples all use
 ruby but you could verify some of the assumptions using clients
 written in other languages.
+
+# CONTRIBUTORS
+
+  - Nitin Kumar (@vnitinv)
+  - Amish Anand (@amanand)
