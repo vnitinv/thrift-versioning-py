@@ -3,7 +3,7 @@
 from thrift_version import add_sys_path
 add_sys_path(__file__)
 
-from accounts import Accounts 
+from accounts import Accounts
 from accounts.ttypes import *
 
 from thrift.transport import TSocket
@@ -16,11 +16,10 @@ class AccountsHandler:
   	def __init__(self):
 		self.accounts = {}
 
-  	def lookup(self,id, mode, active):
-		print 'Inside lookup: ', 'mode:', mode, 'id:', id, 'active:', active
+  	def lookup(self,mode, id, active, name='*'):
+		print 'Inside lookup: ', 'mode:', mode, 'id:', id, 'active:', active, 'name:', name
 		if active and id in self.accounts:
-			return Account(id , self.accounts[id][0], self.accounts[id][1],
-						   self.accounts[id][2])
+			return AccountID(id , self.accounts[id][0], self.accounts[id][1])
 		else:
 			print ('account does not exists with given id %d'%id)
 
@@ -28,10 +27,11 @@ class AccountsHandler:
 		print 'Update account: ', account
 		if account.id in self.accounts:
 			raise InvalidAccountException('Account already exists')
-		self.accounts[account.id]=(account.name, account.city, account.age)
+		# should ignore city argument coming from older clients
+		self.accounts[account.id]=(account.name, account.age)
 	  	print self.accounts
 		# Account object returned from 101 version
-		return Account(account.id, account.name, account.city, account.age)
+		return AccountID(account.id, account.name, account.age)
 	
 handler = AccountsHandler()
 processor = Accounts.Processor(handler)
@@ -41,6 +41,6 @@ pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
 server = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
 
-print "Starting python server..."
+print "Starting python server version 1.1.0..."
 server.serve()
 print "done!"

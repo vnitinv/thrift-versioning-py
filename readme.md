@@ -124,7 +124,7 @@ There are three different versions of this service:
 
 * 1.0.0: The first version
 * 1.0.1: The second version with changes that are source compatible with clients written with the V1 stubs
-* 1.1.0: The third version with additional changes that are binary compatible but not source compativle with V1 clients.
+* 1.1.0: The third version with additional changes that are binary compatible but not source compatible with V1 clients.
 * 2.0.0: Major version which is not compatible with 1.* clients.
 
 You can run the [server](examples/server.rb) as a rack application.
@@ -139,35 +139,34 @@ the local 1.1.0 server stood up by the server rack app.  When you run
 the 2.0.0 version of the client it connects to the 2.0.0 endpoint in
 the rack app.
 
-First install the thrift binaries using your platform installer (yum, brew, etc).
-
-Then install your gems:
-    cd examples
-    gem install bundler
-    bundle install
-
-Next generate the service stubs:
-
-    ./gen.sh
+First install the thrift binaries using your platform installer.
 
 Start up the server.  This instantiates server implementations of the
-1.1.0 and 2.0.0 interfaces.
+different interfaces use specific server.
 
-    rackup
+    python server_100.py
 
-Now run each version of the client.
+Now to run each version of the client.
 
-    ruby client_v100.rb
-    ruby client_v101.rb
-    ruby client_v110.rb
-    ruby client_v200.rb
+    python client_100.py
+    python client_101.py
+    python client_110.py
+    python client_200.py
 
-In [client.rb](examples/client.rb) you can study the changes required
+In (examples/client_xyz.py) you can study the changes required
 in each of the versions of the client in order to upgrade the stubs
-for that version.
+for that version. x,y,z represent Major, Minor and Patch version
+respectively.
 
 So what's the point of runnable examples?  If you have a question
 about the effect of any particular kind of change on clients the best
 way to answer it is to actually try it out.  These examples all use
 ruby but you could verify some of the assumptions using clients
 written in other languages.
+
+
+### thrift IDL differences between different versions.
+
+![Diagram of IDL difference between 1.0.0 & 1.0.1](images/V100-V101.png)
+
+![Diagram of IDL difference between 1.0.1 & 1.1.0](images/V101-V110.png)

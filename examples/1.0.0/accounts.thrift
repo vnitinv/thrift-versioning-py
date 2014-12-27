@@ -17,4 +17,3 @@ service Accounts {
   Account lookup(1:double id, 2:Mode mode, 3:bool active) throws (1:InvalidAccountException ae),
   void update(1:Account account)
 }
-

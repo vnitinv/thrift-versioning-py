@@ -19,7 +19,7 @@ client = Accounts.Client(protocol)
 transport.open()
 
 try:
-  acc = Account(234,'nitinkr','kgg')
+  acc = Account(234, 'nitinkr', 'kgg', 25)
   print 'Updating account ', acc
   # we are expecting Account struct as response but 100 wont sent anything
   client.update(acc)
@@ -28,7 +28,7 @@ except Thrift.TException, tx:
 
 try:
   # 101 version does not allow resetting account with same id 234
-  acc = Account(234,'hacker','pk')
+  acc = Account(234, 'hacker', 'pk', 25)
   print 'Updating account ', acc
   client.update(acc)
 except InvalidAccountException as ex:
