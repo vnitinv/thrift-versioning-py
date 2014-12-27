@@ -164,9 +164,15 @@ way to answer it is to actually try it out.  These examples all use
 ruby but you could verify some of the assumptions using clients
 written in other languages.
 
-
 ### thrift IDL differences between different versions.
 
 ![Diagram of IDL difference between 1.0.0 & 1.0.1](images/V100-V101.png)
 
 ![Diagram of IDL difference between 1.0.1 & 1.1.0](images/V101-V110.png)
+
+=======
+# CONTRIBUTORS
+
+  - Nitin Kumar (@vnitinv)
+  - Amish Anand (@amanand)
+
