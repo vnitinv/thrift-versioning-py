@@ -131,13 +131,10 @@ You can run the [server](examples/server.rb) as a rack application.
 The server implements versions 1.1.0 and 2.0.0 as distinct rack
 applications on separate endpoints.
 
-You can a sample client with the [client runner](examples/client.rb)
-ruby script.  It take a single command line argument, the version of
-the interface to use: 1.0.0, 1.0.1, 1.1.0, or 2.0.0.  To demonstrate
+You can run a sample client with the python scripts. To demonstrate
 binary compatibility, the 1.* versions of the client all connect to
-the local 1.1.0 server stood up by the server rack app.  When you run
-the 2.0.0 version of the client it connects to the 2.0.0 endpoint in
-the rack app.
+the local 1.1.0 server stood up by the server.  When you run the
+2.0.0 version of the client it connects to the 2.0.0 endpoint.
 
 First install the thrift binaries using your platform installer.
 
@@ -145,6 +142,9 @@ Start up the server.  This instantiates server implementations of the
 different interfaces use specific server.
 
     python server_100.py
+    python server_101.py
+
+    or other server specific to version we want to test.
 
 Now to run each version of the client.
 
@@ -161,7 +161,7 @@ respectively.
 So what's the point of runnable examples?  If you have a question
 about the effect of any particular kind of change on clients the best
 way to answer it is to actually try it out.  These examples all use
-ruby but you could verify some of the assumptions using clients
+python but you could verify some of the assumptions using clients
 written in other languages.
 
 ### thrift IDL differences between different versions.
