@@ -16,9 +16,9 @@ class AccountsHandler:
   	def __init__(self):
 		self.accounts = {}
 
-  	def lookup(self,mode, id, active, name='*'):
-		print 'Inside lookup: ', 'mode:', mode, 'id:', id, 'active:', active, 'name:', name
-		if active and id in self.accounts:
+  	def lookup(self,mode, id, name='*'):
+		print 'Inside lookup: ', 'mode:', mode, 'id:', id, 'name:', name
+		if id in self.accounts:
 			return AccountID(id , self.accounts[id][0], self.accounts[id][1])
 		else:
 			print ('account does not exists with given id %d'%id)
