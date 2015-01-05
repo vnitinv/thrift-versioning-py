@@ -16,10 +16,15 @@ class AccountsHandler:
   	def __init__(self):
 		self.accounts = {}
 
-  	def lookup(self,mode, id, name='*'):
+  	def lookup(self, mode, id, name):
 		print 'Inside lookup: ', 'mode:', mode, 'id:', id, 'name:', name
 		if id in self.accounts:
-			return AccountID(id , self.accounts[id][0], self.accounts[id][1])
+			if name=='*':	#this will help older client
+			    return AccountID(id , self.accounts[id][0], self.accounts[id][1])
+			elif self.accounts[id][0]==name:
+				return AccountID(id , self.accounts[id][0], self.accounts[id][1])
+			else:
+				print ('account does not exists with given id %d and name %s'%(id, name))
 		else:
 			print ('account does not exists with given id %d'%id)
 

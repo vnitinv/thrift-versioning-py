@@ -1,7 +1,6 @@
 from thrift_version import add_sys_path
 add_sys_path(__file__)
 
-
 from accounts import Accounts
 from accounts.ttypes import *
 from accounts.constants import *
@@ -19,30 +18,35 @@ client = Accounts.Client(protocol)
 transport.open()
 
 try:
-  acc = AccountID(234, 'nitinkr', 25)
-  print 'Updating account ', acc
-  # we are expecting Account struct as response but 100 wont sent anything
-  client.update(acc)
+    acc = AccountID(234, 'nitinkr', 25)
+    print 'Updating account ', acc
+    # we are expecting Account struct as response but 100 wont sent anything
+    #  client.update(acc)
 except Thrift.TException, tx:
-  print "Genric Exception: %s" % (tx.message)
+    print "Genric Exception: %s" % (tx.message)
 
 try:
-  # 101 version does not allow resetting account with same id 234
-  acc = AccountID(234, 'hacker', 25)
-  print 'Updating account ', acc
-  client.update(acc)
+    # 101 version does not allow resetting account with same id 234
+    acc = AccountID(234, 'hacker', 25)
+    print 'Updating account ', acc
+    client.update(acc)
 except InvalidAccountException as ex:
-  print "InvalidAccountException: %s" % (ex.message)
+    print "InvalidAccountException: %s" % (ex.message)
 except Thrift.TException, tx:
-  print "Genric Exception: %s" % (tx.message)
+    print "Genric Exception: %s" % (tx.message)
 
 try:
-  print '\nAccount lookup '
-  print client.lookup(id=234, mode=Mode.ADMIN, name='nitinkr')
-  #to get specific exception as in 100 version
-  print client.lookup(id=235, mode=4, name='pk')
+    print '\nAccount lookup '
+    print client.lookup(id=234, mode=Mode.ADMIN, name='hacker')
+    # As parameter position got changes, to call with key
+    x = client.lookup(Mode.ADMIN, 234, 'hacker')
+    # To show even when Account struct name got changed to AccountID, fn return wont be impacted
+    print 'id: ', x.id, 'name: ', x.name
+    # to get specific exception as in 100 version
+    client.lookup(id=235, mode=4, name='pk')
+
 # generic exception for 101 server as there for wrong id 235 we have removed exception
 except Thrift.TException, tx:
-  print "Genric Exception: %s" % (tx.message)
+    print "Genric Exception: %s" % (tx.message)
 
 transport.close()

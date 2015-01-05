@@ -26,6 +26,7 @@ service Accounts {
   // (4) Add an argument 'name' to the account lookup method with a default value for old clients.  Note that
   //     it uses index 4, skipping 3 which was allocated to "active"
   // (5) Change position of first and second arguments
+  // check http://stackoverflow.com/questions/14878004/default-arguments-with-default-values-in-thrift-python-client
   AccountID lookup(2:Mode mode, 1:double id, 4:string name="*"),
   AccountID update(1:AccountID account) throws (1:InvalidAccountException ae)
 }

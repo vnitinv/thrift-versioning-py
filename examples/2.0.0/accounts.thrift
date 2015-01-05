@@ -1,10 +1,3 @@
-/*
- * This interface has changes to version 1.* which break backward compatibility.
- */
-namespace rb BusinessServices.V2
-namespace java com.example.business.V2
-
-
 struct AccountID {
   1: required i64 id,
   2: string name,
