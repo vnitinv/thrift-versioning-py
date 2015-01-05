@@ -127,10 +127,6 @@ There are three different versions of this service:
 * 1.1.0: The third version with additional changes that are binary compatible but not source compatible with V1 clients.
 * 2.0.0: Major version which is not compatible with 1.* clients.
 
-You can run the [server](examples/server.rb) as a rack application.
-The server implements versions 1.1.0 and 2.0.0 as distinct rack
-applications on separate endpoints.
-
 You can run a sample client with the python scripts. To demonstrate
 binary compatibility, the 1.* versions of the client all connect to
 the local 1.1.0 server stood up by the server.  When you run the
