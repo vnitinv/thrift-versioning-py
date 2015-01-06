@@ -25,6 +25,8 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
   print 'Functions:'
   print '  AccountID lookup(Mode mode, double id, string name)'
   print '  AccountID update(AccountID account)'
+  print '  bool credit(double id, double amount)'
+  print '  double credit_balance(double id)'
   print ''
   sys.exit(0)
 
@@ -87,6 +89,18 @@ elif cmd == 'update':
     print 'update requires 1 args'
     sys.exit(1)
   pp.pprint(client.update(eval(args[0]),))
+
+elif cmd == 'credit':
+  if len(args) != 2:
+    print 'credit requires 2 args'
+    sys.exit(1)
+  pp.pprint(client.credit(eval(args[0]),eval(args[1]),))
+
+elif cmd == 'credit_balance':
+  if len(args) != 1:
+    print 'credit_balance requires 1 args'
+    sys.exit(1)
+  pp.pprint(client.credit_balance(eval(args[0]),))
 
 else:
   print 'Unrecognized method %s' % cmd

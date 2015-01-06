@@ -17,7 +17,8 @@ exception InvalidAccountException {
 
 service Accounts {
   // (2) Remove the declared exception from the method signature
-  Account lookup(1:double id, 2:Mode mode, 3:bool active),
+  // # active default val to 1 helps 1.1.0 client to communicate as active is removed thr
+  Account lookup(1:double id, 2:Mode mode, 3:bool active=1),
   // (3) Change method signature to return Account instead of void
   // (4) Add exception to method signature
   Account update(1:Account account) throws (1:InvalidAccountException ae)

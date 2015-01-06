@@ -29,4 +29,7 @@ service Accounts {
   // check http://stackoverflow.com/questions/14878004/default-arguments-with-default-values-in-thrift-python-client
   AccountID lookup(2:Mode mode, 1:double id, 4:string name="*"),
   AccountID update(1:AccountID account) throws (1:InvalidAccountException ae)
+  // Adding 2 new function
+  bool credit(1:double id, 2: double amount)
+  double credit_balance(1:double id)
 }

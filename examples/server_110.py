@@ -15,6 +15,7 @@ from thrift.server import TServer
 class AccountsHandler:
   	def __init__(self):
 		self.accounts = {}
+		self.balance = {}
 
   	def lookup(self, mode, id, name):
 		print 'Inside lookup: ', 'mode:', mode, 'id:', id, 'name:', name
@@ -37,6 +38,21 @@ class AccountsHandler:
 	  	print self.accounts
 		# Account object returned from 101 version
 		return AccountID(account.id, account.name, account.age)
+
+	#new functions added
+	def credit(self, id, amount):
+		if id in self.accounts:
+			if id not in self.balance:
+				self.balance.setdefault(id, amount)
+			else:
+				self.balance[id]+=amount
+			return True
+		else:
+			print 'Given id %d dont have account'%id
+			return False
+
+	def credit_balance(self, id):
+		return self.balance.get(id) or -1
 	
 handler = AccountsHandler()
 processor = Accounts.Processor(handler)
