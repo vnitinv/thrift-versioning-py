@@ -21,7 +21,7 @@ try:
     acc = AccountID(234, 'nitinkr', 25)
     print 'Updating account ', acc
     # we are expecting Account struct as response but 100 wont sent anything
-    client.update(acc)
+    #  client.update(acc)
 except Thrift.TException, tx:
     print "Genric Exception: %s" % (tx.message)
 
@@ -29,7 +29,7 @@ try:
     # 101 version does not allow resetting account with same id 234
     acc = AccountID(234, 'hacker', 25)
     print 'Updating account ', acc
-    client.update(acc)
+    client.update_account(acc)
 except InvalidAccountException as ex:
     print "InvalidAccountException: %s" % (ex.message)
 except Thrift.TException, tx:
@@ -53,10 +53,11 @@ except Thrift.TException, tx:
 try:
     print '\nAccount credit'
     print client.credit(234, 410)
-    print 'Credit balance of 234: ', client.credit_balance(234)
+    # credit_balance function is removed
+    #print 'Credit balance of 234: ', client.credit_balance(234)
     # -ve testing
     print client.credit(235, 410)
-    print 'Credit balance of 235: ', client.credit_balance(235)
+    #print 'Credit balance of 235: ', client.credit_balance(235)
 except Thrift.TException, tx:
     print "Genric Exception: %s" % (tx.message)
 
@@ -64,7 +65,7 @@ except Thrift.TException, tx:
 try:
     print '\nAccount Debit'
     print client.debit(234, 40)
-    print 'Credit balance of 234: ', client.credit_balance(234)
+    #print 'Credit balance of 234: ', client.credit_balance(234)
     print client.debit(234, 600)
 except Thrift.TException, tx:
     print "Genric Exception: %s" % (tx.message)
