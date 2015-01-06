@@ -1,5 +1,5 @@
 struct AccountID {
-  1: required i64 id,
+  1: required double id,
   2: string name,
   4: i64 parent
 }
