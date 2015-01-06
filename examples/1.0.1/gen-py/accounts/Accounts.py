@@ -171,10 +171,10 @@ class lookup_args:
     None, # 0
     (1, TType.DOUBLE, 'id', None, None, ), # 1
     (2, TType.I32, 'mode', None, None, ), # 2
-    (3, TType.BOOL, 'active', None, None, ), # 3
+    (3, TType.BOOL, 'active', None, True, ), # 3
   )
 
-  def __init__(self, id=None, mode=None, active=None,):
+  def __init__(self, id=None, mode=None, active=thrift_spec[3][4],):
     self.id = id
     self.mode = mode
     self.active = active
