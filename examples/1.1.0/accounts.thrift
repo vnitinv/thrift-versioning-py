@@ -32,4 +32,5 @@ service Accounts {
   // Adding 2 new function
   bool credit(1:double id, 2: double amount)
   double credit_balance(1:double id)
+  bool debit(1:double id, 2: double amount)
 }

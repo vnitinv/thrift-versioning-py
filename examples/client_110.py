@@ -60,4 +60,12 @@ try:
 except Thrift.TException, tx:
     print "Genric Exception: %s" % (tx.message)
 
+# New functions added in 1.1.0
+try:
+    print '\nAccount Debit'
+    print client.debit(234, 40)
+    print 'Credit balance of 234: ', client.credit_balance(234)
+    print client.debit(234, 600)
+except Thrift.TException, tx:
+    print "Genric Exception: %s" % (tx.message)
 transport.close()

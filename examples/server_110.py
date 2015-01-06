@@ -53,6 +53,18 @@ class AccountsHandler:
 
 	def credit_balance(self, id):
 		return self.balance.get(id) or -1
+
+	def debit(self, id, amount):
+		if id in self.accounts or id in self.balance:
+			if self.balance[id]>=amount:
+				self.balance[id]-=amount
+				return True
+			else:
+				print 'You do not have sufficient balance in your account'
+				return False
+		else:
+			print 'Given id %d dont have account or balance'%id
+			return False
 	
 handler = AccountsHandler()
 processor = Accounts.Processor(handler)
