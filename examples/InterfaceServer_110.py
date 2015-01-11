@@ -9,7 +9,6 @@ from interfaces import InterfacesService
 from interfaces.ttypes import *
 from interfaces.constants import *
 
-from thrift import Thrift
 from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
@@ -38,6 +37,29 @@ class InterfaceServiceHandler:
             del self.interfaces[if_name]
             return ReturnStatus(101, 'deleted')
         else:
+            raise InvalidInterfaceException('Interface %s does not exists'%if_name)
+
+    def V4InterfaceEdit(self, if_name, unit, v4_prefix, v4_prefix_len):
+        print ('V4InterfaceEdit', if_name, unit, v4_prefix, v4_prefix_len)
+        if if_name in self.interfaces:
+            if (unit, v4_prefix, v4_prefix_len) in self.interfaces[if_name]:
+                print 'Same Interface already %s exists'%if_name
+                return True
+            else:
+                for i in self.interfaces[if_name]:
+                    if i[0]==unit:
+                        self.interfaces[if_name][self.interfaces[if_name].index(i)]=(unit, v4_prefix, v4_prefix_len)
+                        print self.interfaces
+            return True
+        else:
+            print 'Interface %s does not exists'%if_name
+            raise InvalidInterfaceException('Interface %s does not exists'%if_name)
+
+    def InterfaceExists(self, if_name):
+        if if_name in self.interfaces:
+            print 'Interface %s exists'%if_name
+        else:
+            print 'Interface %s does not exists'%if_name
             raise InvalidInterfaceException('Interface %s does not exists'%if_name)
 
     def InterfaceGet(self, if_name):
