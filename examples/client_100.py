@@ -17,6 +17,7 @@ protocol = TBinaryProtocol.TBinaryProtocol(transport)
 client = Accounts.Client(protocol)
 
 transport.open()
+print "Starting python client version 1.0.0..."
 
 try:
   acc = Account(234,'nitinkr','kgg')
