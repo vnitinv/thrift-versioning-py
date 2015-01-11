@@ -40,6 +40,17 @@ try:
 except InvalidInterfaceException as tx:
     print '%s' % (tx.message)
 
+try:
+    print '#'*60
+    # invalid interface name which get validated on server
+    result = intf.V4InterfaceAdd('ge-0/0/45', 0, '10.209.11.176', 24)
+    print 'Invoked V4InterfaceAdd \nreturn = ', result
+    result = intf.V4InterfaceEdit('ge-0/0/45', 0, '10.0.11.176', 72)
+    print 'Invoked V4InterfaceEdit \nreturn = ', result
+    result = intf.V4InterfaceEdit('ge-0/1/45', 0, '10.0.11.176', 72)
+    print 'Invoked V4InterfaceEdit \nreturn = ', result
+except Exception as tx:
+    print '%s' % (tx.message)
 
 print '#'*60
 intf.V4InterfaceAdd('ge-0/0/45', 0, '10.209.11.176', 24)

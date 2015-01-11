@@ -39,6 +39,22 @@ class InterfaceServiceHandler:
         else:
             return False
 
+    def V4InterfaceEdit(self, if_name, unit, v4_prefix, v4_prefix_len):
+        print ('V4InterfaceEdit', if_name, unit, v4_prefix, v4_prefix_len)
+        if if_name in self.interfaces:
+            if (unit, v4_prefix, v4_prefix_len) in self.interfaces[if_name]:
+                print 'Same Interface already %s exists'%if_name
+                return True
+            else:
+                for i in self.interfaces[if_name]:
+                    if i[0]==unit:
+                        self.interfaces[if_name][self.interfaces[if_name].index(i)]=(unit, v4_prefix, v4_prefix_len)
+                        print self.interfaces
+            return True
+        else:
+            print 'Interface %s does not exists'%if_name
+            return False
+
     def InterfaceExists(self, if_name):
         if if_name in self.interfaces:
             print 'Interface %s exists'%if_name

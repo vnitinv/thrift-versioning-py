@@ -35,7 +35,23 @@ class InterfaceServiceHandler:
         print ('V4InterfaceDelete', if_name, unit, v4_prefix, v4_prefix_len)
         if if_name in self.interfaces:
             del self.interfaces[if_name]
-            #return RetStatus(101, 'deleted', 'dummy')
+            return RetStatus(101, 'deleted', 'dummy')
+        else:
+            print 'Interface %s does not exists'%if_name
+            return RetStatus(-1, 'Interface does not exists', 'dummy')
+
+
+    def V4InterfaceEdit(self, if_name, unit, v4_prefix, v4_prefix_len):
+        print ('V4InterfaceEdit', if_name, unit, v4_prefix, v4_prefix_len)
+        if if_name in self.interfaces:
+            if (unit, v4_prefix, v4_prefix_len) in self.interfaces[if_name]:
+                print 'Same Interface already %s exists'%if_name
+                return True
+            else:
+                for i in self.interfaces[if_name]:
+                    if i[0]==unit:
+                        self.interfaces[if_name][self.interfaces[if_name].index(i)]=(unit, v4_prefix, v4_prefix_len)
+                        print self.interfaces
             return True
         else:
             print 'Interface %s does not exists'%if_name
