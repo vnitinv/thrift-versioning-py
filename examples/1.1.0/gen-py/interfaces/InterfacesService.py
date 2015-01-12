@@ -45,13 +45,6 @@ class Iface:
     """
     pass
 
-  def InterfaceStatsGet(self, if_name):
-    """
-    Parameters:
-     - if_name
-    """
-    pass
-
   def V4InterfaceEdit(self, if_name, unit, prefix, prefix_len):
     """
     Parameters:
@@ -181,36 +174,6 @@ class Client(Iface):
       return result.success
     raise TApplicationException(TApplicationException.MISSING_RESULT, "InterfaceGet failed: unknown result");
 
-  def InterfaceStatsGet(self, if_name):
-    """
-    Parameters:
-     - if_name
-    """
-    self.send_InterfaceStatsGet(if_name)
-    return self.recv_InterfaceStatsGet()
-
-  def send_InterfaceStatsGet(self, if_name):
-    self._oprot.writeMessageBegin('InterfaceStatsGet', TMessageType.CALL, self._seqid)
-    args = InterfaceStatsGet_args()
-    args.if_name = if_name
-    args.write(self._oprot)
-    self._oprot.writeMessageEnd()
-    self._oprot.trans.flush()
-
-  def recv_InterfaceStatsGet(self):
-    (fname, mtype, rseqid) = self._iprot.readMessageBegin()
-    if mtype == TMessageType.EXCEPTION:
-      x = TApplicationException()
-      x.read(self._iprot)
-      self._iprot.readMessageEnd()
-      raise x
-    result = InterfaceStatsGet_result()
-    result.read(self._iprot)
-    self._iprot.readMessageEnd()
-    if result.success is not None:
-      return result.success
-    raise TApplicationException(TApplicationException.MISSING_RESULT, "InterfaceStatsGet failed: unknown result");
-
   def V4InterfaceEdit(self, if_name, unit, prefix, prefix_len):
     """
     Parameters:
@@ -287,7 +250,6 @@ class Processor(Iface, TProcessor):
     self._processMap["V4InterfaceAdd"] = Processor.process_V4InterfaceAdd
     self._processMap["V4InterfaceDelete"] = Processor.process_V4InterfaceDelete
     self._processMap["InterfaceGet"] = Processor.process_InterfaceGet
-    self._processMap["InterfaceStatsGet"] = Processor.process_InterfaceStatsGet
     self._processMap["V4InterfaceEdit"] = Processor.process_V4InterfaceEdit
     self._processMap["InterfaceExists"] = Processor.process_InterfaceExists
 
@@ -338,17 +300,6 @@ class Processor(Iface, TProcessor):
     result = InterfaceGet_result()
     result.success = self._handler.InterfaceGet(args.if_name)
     oprot.writeMessageBegin("InterfaceGet", TMessageType.REPLY, seqid)
-    result.write(oprot)
-    oprot.writeMessageEnd()
-    oprot.trans.flush()
-
-  def process_InterfaceStatsGet(self, seqid, iprot, oprot):
-    args = InterfaceStatsGet_args()
-    args.read(iprot)
-    iprot.readMessageEnd()
-    result = InterfaceStatsGet_result()
-    result.success = self._handler.InterfaceStatsGet(args.if_name)
-    oprot.writeMessageBegin("InterfaceStatsGet", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
     oprot.trans.flush()
@@ -819,125 +770,6 @@ class InterfaceGet_result:
       for iter6 in self.success:
         iter6.write(oprot)
       oprot.writeListEnd()
-      oprot.writeFieldEnd()
-    oprot.writeFieldStop()
-    oprot.writeStructEnd()
-
-  def validate(self):
-    return
-
-
-  def __repr__(self):
-    L = ['%s=%r' % (key, value)
-      for key, value in self.__dict__.iteritems()]
-    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-  def __eq__(self, other):
-    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-  def __ne__(self, other):
-    return not (self == other)
-
-class InterfaceStatsGet_args:
-  """
-  Attributes:
-   - if_name
-  """
-
-  thrift_spec = (
-    None, # 0
-    (1, TType.STRING, 'if_name', None, None, ), # 1
-  )
-
-  def __init__(self, if_name=None,):
-    self.if_name = if_name
-
-  def read(self, iprot):
-    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
-      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
-      return
-    iprot.readStructBegin()
-    while True:
-      (fname, ftype, fid) = iprot.readFieldBegin()
-      if ftype == TType.STOP:
-        break
-      if fid == 1:
-        if ftype == TType.STRING:
-          self.if_name = iprot.readString();
-        else:
-          iprot.skip(ftype)
-      else:
-        iprot.skip(ftype)
-      iprot.readFieldEnd()
-    iprot.readStructEnd()
-
-  def write(self, oprot):
-    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
-      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
-      return
-    oprot.writeStructBegin('InterfaceStatsGet_args')
-    if self.if_name is not None:
-      oprot.writeFieldBegin('if_name', TType.STRING, 1)
-      oprot.writeString(self.if_name)
-      oprot.writeFieldEnd()
-    oprot.writeFieldStop()
-    oprot.writeStructEnd()
-
-  def validate(self):
-    return
-
-
-  def __repr__(self):
-    L = ['%s=%r' % (key, value)
-      for key, value in self.__dict__.iteritems()]
-    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
-
-  def __eq__(self, other):
-    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
-
-  def __ne__(self, other):
-    return not (self == other)
-
-class InterfaceStatsGet_result:
-  """
-  Attributes:
-   - success
-  """
-
-  thrift_spec = (
-    (0, TType.I32, 'success', None, None, ), # 0
-  )
-
-  def __init__(self, success=None,):
-    self.success = success
-
-  def read(self, iprot):
-    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
-      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
-      return
-    iprot.readStructBegin()
-    while True:
-      (fname, ftype, fid) = iprot.readFieldBegin()
-      if ftype == TType.STOP:
-        break
-      if fid == 0:
-        if ftype == TType.I32:
-          self.success = iprot.readI32();
-        else:
-          iprot.skip(ftype)
-      else:
-        iprot.skip(ftype)
-      iprot.readFieldEnd()
-    iprot.readStructEnd()
-
-  def write(self, oprot):
-    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
-      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
-      return
-    oprot.writeStructBegin('InterfaceStatsGet_result')
-    if self.success is not None:
-      oprot.writeFieldBegin('success', TType.I32, 0)
-      oprot.writeI32(self.success)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()

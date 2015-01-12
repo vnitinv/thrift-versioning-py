@@ -67,14 +67,6 @@ class InterfaceServiceHandler:
             if_details = self.interfaces[if_name]
             return [IF(if_name, i[0], i[1], i[2]) for i in if_details]
 
-    def InterfaceStatsGet(self, if_name):
-        # dummy function
-        if if_name in self.interfaces:
-            return IfStatus.UP
-        else:
-            return IfStatus.DOWN
-
-
 
 handler = InterfaceServiceHandler()
 processor = InterfacesService.Processor(handler)

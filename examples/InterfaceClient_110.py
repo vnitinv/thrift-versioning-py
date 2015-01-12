@@ -41,6 +41,10 @@ try:
     print 'Invoked V4InterfaceDelete \nreturn = ', result
 except InvalidInterfaceException as tx:
     print '%s' % (tx.message)
+# using generic exception as this will be needed from 2.0.0 server
+# as V4InterfaceDelete is not defined there
+except Exception as tx:
+    print '%s' % (tx.message)
 
 # 100 used to throw specific exception, 101 wont throw that
 try:
@@ -84,10 +88,6 @@ try:
     # new functions added in 1.1.0
     result = intf.InterfaceGet('ge-0/0/45')
     print 'Invoked InterfaceGet \nreturn = ', result
-    result = intf.InterfaceStatsGet('ge-0/0/45')
-    print 'Invoked InterfaceStatsGet \nreturn = ', result
-    result = intf.InterfaceStatsGet('xe-1/1/1')
-    print 'Invoked InterfaceStatsGet \nreturn = ', result
 except Exception as tx:
     print '%s' % (tx.message)
 
@@ -99,12 +99,5 @@ try:
     print 'Invoked V4InterfaceAdd \nreturn = ', result
     result = intf.V4InterfaceAdd('ge-0/0/45', 1, '71.2.34.34', 96)
     print 'Invoked V4InterfaceAdd \nreturn = ', result
-    # new functions added in 1.1.0
-    result = intf.InterfaceGet('ge-0/0/45')
-    print 'Invoked InterfaceGet \nreturn = ', result
-    result = intf.InterfaceStatsGet('ge-0/0/45')
-    print 'Invoked InterfaceStatsGet \nreturn = ', result
-    result = intf.InterfaceStatsGet('xe-1/1/1')
-    print 'Invoked InterfaceStatsGet \nreturn = ', result
 except Exception as tx:
     print '%s' % (tx.message)

@@ -45,6 +45,13 @@ class Iface:
     """
     pass
 
+  def InterfaceExists(self, if_name):
+    """
+    Parameters:
+     - if_name
+    """
+    pass
+
 
 class Client(Iface):
   def __init__(self, iprot, oprot=None):
@@ -157,6 +164,36 @@ class Client(Iface):
       return result.success
     raise TApplicationException(TApplicationException.MISSING_RESULT, "InterfaceGet failed: unknown result");
 
+  def InterfaceExists(self, if_name):
+    """
+    Parameters:
+     - if_name
+    """
+    self.send_InterfaceExists(if_name)
+    self.recv_InterfaceExists()
+
+  def send_InterfaceExists(self, if_name):
+    self._oprot.writeMessageBegin('InterfaceExists', TMessageType.CALL, self._seqid)
+    args = InterfaceExists_args()
+    args.if_name = if_name
+    args.write(self._oprot)
+    self._oprot.writeMessageEnd()
+    self._oprot.trans.flush()
+
+  def recv_InterfaceExists(self):
+    (fname, mtype, rseqid) = self._iprot.readMessageBegin()
+    if mtype == TMessageType.EXCEPTION:
+      x = TApplicationException()
+      x.read(self._iprot)
+      self._iprot.readMessageEnd()
+      raise x
+    result = InterfaceExists_result()
+    result.read(self._iprot)
+    self._iprot.readMessageEnd()
+    if result.ae is not None:
+      raise result.ae
+    return
+
 
 class Processor(Iface, TProcessor):
   def __init__(self, handler):
@@ -165,6 +202,7 @@ class Processor(Iface, TProcessor):
     self._processMap["V4InterfaceAdd"] = Processor.process_V4InterfaceAdd
     self._processMap["V4InterfaceRemove"] = Processor.process_V4InterfaceRemove
     self._processMap["InterfaceGet"] = Processor.process_InterfaceGet
+    self._processMap["InterfaceExists"] = Processor.process_InterfaceExists
 
   def process(self, iprot, oprot):
     (name, type, seqid) = iprot.readMessageBegin()
@@ -213,6 +251,20 @@ class Processor(Iface, TProcessor):
     result = InterfaceGet_result()
     result.success = self._handler.InterfaceGet(args.unit)
     oprot.writeMessageBegin("InterfaceGet", TMessageType.REPLY, seqid)
+    result.write(oprot)
+    oprot.writeMessageEnd()
+    oprot.trans.flush()
+
+  def process_InterfaceExists(self, seqid, iprot, oprot):
+    args = InterfaceExists_args()
+    args.read(iprot)
+    iprot.readMessageEnd()
+    result = InterfaceExists_result()
+    try:
+      self._handler.InterfaceExists(args.if_name)
+    except InvalidInterfaceException, ae:
+      result.ae = ae
+    oprot.writeMessageBegin("InterfaceExists", TMessageType.REPLY, seqid)
     result.write(oprot)
     oprot.writeMessageEnd()
     oprot.trans.flush()
@@ -655,6 +707,127 @@ class InterfaceGet_result:
       for iter6 in self.success:
         iter6.write(oprot)
       oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def validate(self):
+    return
+
+
+  def __repr__(self):
+    L = ['%s=%r' % (key, value)
+      for key, value in self.__dict__.iteritems()]
+    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+  def __eq__(self, other):
+    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
+class InterfaceExists_args:
+  """
+  Attributes:
+   - if_name
+  """
+
+  thrift_spec = (
+    None, # 0
+    (1, TType.STRING, 'if_name', None, None, ), # 1
+  )
+
+  def __init__(self, if_name=None,):
+    self.if_name = if_name
+
+  def read(self, iprot):
+    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
+      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.if_name = iprot.readString();
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
+      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
+      return
+    oprot.writeStructBegin('InterfaceExists_args')
+    if self.if_name is not None:
+      oprot.writeFieldBegin('if_name', TType.STRING, 1)
+      oprot.writeString(self.if_name)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def validate(self):
+    return
+
+
+  def __repr__(self):
+    L = ['%s=%r' % (key, value)
+      for key, value in self.__dict__.iteritems()]
+    return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+  def __eq__(self, other):
+    return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
+class InterfaceExists_result:
+  """
+  Attributes:
+   - ae
+  """
+
+  thrift_spec = (
+    None, # 0
+    (1, TType.STRUCT, 'ae', (InvalidInterfaceException, InvalidInterfaceException.thrift_spec), None, ), # 1
+  )
+
+  def __init__(self, ae=None,):
+    self.ae = ae
+
+  def read(self, iprot):
+    if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
+      fastbinary.decode_binary(self, iprot.trans, (self.__class__, self.thrift_spec))
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRUCT:
+          self.ae = InvalidInterfaceException()
+          self.ae.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if oprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and self.thrift_spec is not None and fastbinary is not None:
+      oprot.trans.write(fastbinary.encode_binary(self, (self.__class__, self.thrift_spec)))
+      return
+    oprot.writeStructBegin('InterfaceExists_result')
+    if self.ae is not None:
+      oprot.writeFieldBegin('ae', TType.STRUCT, 1)
+      self.ae.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()

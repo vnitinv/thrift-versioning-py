@@ -33,8 +33,9 @@ class InterfaceServiceHandler:
             self.interfaces[if_name]=[(unit, prefix, size)]
         return ReturnStatus(100, 'added')
 
+    # function name V4InterfaceDelete changed to V4InterfaceRemove
     def V4InterfaceRemove(self, if_name, unit, v4_prefix, v4_prefix_len):
-        print ('V4InterfaceDelete', if_name, unit, v4_prefix, v4_prefix_len)
+        print ('V4InterfaceRemove', if_name, unit, v4_prefix, v4_prefix_len)
         if if_name in self.interfaces:
             del self.interfaces[if_name]
             return ReturnStatus(101, 'deleted')
@@ -48,6 +49,13 @@ class InterfaceServiceHandler:
                 if i[0]==unit:
                     ret.append(IF(k, i[0], i[1], i[2]))
         return ret
+
+    def InterfaceExists(self, if_name):
+        if if_name in self.interfaces:
+            print 'Interface %s exists'%if_name
+        else:
+            print 'Interface %s does not exists'%if_name
+            raise InvalidInterfaceException('Interface %s does not exists'%if_name)
 
 
 handler = InterfaceServiceHandler()
