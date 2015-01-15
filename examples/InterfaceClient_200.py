@@ -88,3 +88,12 @@ except InvalidInterfaceException as tx:
 # need to handle genric exception as otherwise it will break with 100 server
 except Exception as tx:
     print '%s' % (tx.message)
+
+try:
+    print '#'*60
+    # void return type function on which 1.0.1 will throw exception
+    obj = ReturnStatus(0, 'testing')
+    result = intf.InterfaceExists('ge-0/0/45', obj)
+    print 'Invoked InterfaceExists \nreturn = ', result
+except Exception as tx:
+    print '%s' % (tx.message)

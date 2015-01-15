@@ -73,7 +73,9 @@ except Exception as tx:
 try:
     print '#'*60
     # void return type function on which 1.0.1 will throw exception
-    print intf.InterfaceExists('ge-0/0/45')
+    obj = ReturnStatus(0, 'testing')
+    result = intf.InterfaceExists('ge-0/0/45', obj)
+    print 'Invoked InterfaceExists \nreturn = ', result
 except Exception as tx:
     print '%s' % (tx.message)
 

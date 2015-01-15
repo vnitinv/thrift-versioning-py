@@ -55,7 +55,9 @@ class InterfaceServiceHandler:
             print 'Interface %s does not exists'%if_name
             raise InvalidInterfaceException('Interface %s does not exists'%if_name)
 
-    def InterfaceExists(self, if_name):
+    def InterfaceExists(self, if_name, data):
+        # to show case what happen when structure name is changed
+        print data, data.err_code, data.traceback
         if if_name in self.interfaces:
             print 'Interface %s exists'%if_name
         else:

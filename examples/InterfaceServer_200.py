@@ -50,13 +50,14 @@ class InterfaceServiceHandler:
                     ret.append(IF(k, i[0], i[1], i[2]))
         return ret
 
-    def InterfaceExists(self, if_name):
+    def InterfaceExists(self, if_name, data):
+        # to show case what happen when structure name is changed
+        print data, data.err_code, data.traceback
         if if_name in self.interfaces:
             print 'Interface %s exists'%if_name
         else:
             print 'Interface %s does not exists'%if_name
             raise InvalidInterfaceException('Interface %s does not exists'%if_name)
-
 
 handler = InterfaceServiceHandler()
 processor = InterfacesService.Processor(handler)
