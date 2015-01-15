@@ -92,10 +92,10 @@ class RetStatus:
     None, # 0
     (1, TType.I32, 'err_code', None, None, ), # 1
     (2, TType.STRING, 'err_str', None, None, ), # 2
-    (3, TType.STRING, 'traceback', None, None, ), # 3
+    (3, TType.STRING, 'traceback', None, "abc", ), # 3
   )
 
-  def __init__(self, err_code=None, err_str=None, traceback=None,):
+  def __init__(self, err_code=None, err_str=None, traceback=thrift_spec[3][4],):
     self.err_code = err_code
     self.err_str = err_str
     self.traceback = traceback

@@ -55,10 +55,11 @@ class Iface:
     """
     pass
 
-  def InterfaceExists(self, if_name):
+  def InterfaceExists(self, if_name, ret_status):
     """
     Parameters:
      - if_name
+     - ret_status
     """
     pass
 
@@ -212,18 +213,20 @@ class Client(Iface):
       raise result.ae
     raise TApplicationException(TApplicationException.MISSING_RESULT, "V4InterfaceEdit failed: unknown result");
 
-  def InterfaceExists(self, if_name):
+  def InterfaceExists(self, if_name, ret_status):
     """
     Parameters:
      - if_name
+     - ret_status
     """
-    self.send_InterfaceExists(if_name)
+    self.send_InterfaceExists(if_name, ret_status)
     self.recv_InterfaceExists()
 
-  def send_InterfaceExists(self, if_name):
+  def send_InterfaceExists(self, if_name, ret_status):
     self._oprot.writeMessageBegin('InterfaceExists', TMessageType.CALL, self._seqid)
     args = InterfaceExists_args()
     args.if_name = if_name
+    args.ret_status = ret_status
     args.write(self._oprot)
     self._oprot.writeMessageEnd()
     self._oprot.trans.flush()
@@ -324,7 +327,7 @@ class Processor(Iface, TProcessor):
     iprot.readMessageEnd()
     result = InterfaceExists_result()
     try:
-      self._handler.InterfaceExists(args.if_name)
+      self._handler.InterfaceExists(args.if_name, args.ret_status)
     except InvalidInterfaceException, ae:
       result.ae = ae
     oprot.writeMessageBegin("InterfaceExists", TMessageType.REPLY, seqid)
@@ -961,15 +964,18 @@ class InterfaceExists_args:
   """
   Attributes:
    - if_name
+   - ret_status
   """
 
   thrift_spec = (
     None, # 0
     (1, TType.STRING, 'if_name', None, None, ), # 1
+    (2, TType.STRUCT, 'ret_status', (ReturnStatus, ReturnStatus.thrift_spec), None, ), # 2
   )
 
-  def __init__(self, if_name=None,):
+  def __init__(self, if_name=None, ret_status=None,):
     self.if_name = if_name
+    self.ret_status = ret_status
 
   def read(self, iprot):
     if iprot.__class__ == TBinaryProtocol.TBinaryProtocolAccelerated and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastbinary is not None:
@@ -985,6 +991,12 @@ class InterfaceExists_args:
           self.if_name = iprot.readString();
         else:
           iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRUCT:
+          self.ret_status = ReturnStatus()
+          self.ret_status.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -998,6 +1010,10 @@ class InterfaceExists_args:
     if self.if_name is not None:
       oprot.writeFieldBegin('if_name', TType.STRING, 1)
       oprot.writeString(self.if_name)
+      oprot.writeFieldEnd()
+    if self.ret_status is not None:
+      oprot.writeFieldBegin('ret_status', TType.STRUCT, 2)
+      self.ret_status.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
